@@ -9,7 +9,10 @@
 // ==/UserScript==
 
 const noteDivSelector = "#noteInput";
-const BFGUrlRegex = 'https://buildbaron.corp.mongodb.com/.*/BFG-\\d+'
+const failureTabId = "tab-8";
+
+const BFGUrlRegex =
+    'https://buildbaron.corp.mongodb.com/ui/#/(bfg|patch_failure)/.*'
 function runWhenReady(readySelector, callback) {
   var numAttempts = 0;
   var tryNow = function() {
@@ -47,7 +50,11 @@ function ButtonClickAction(zEvent) {
   window.open(url, '_blank').focus();
 }
 
-function addButtons(url) {
+function addButtons() {
+  if (document.getElementById("totoButton")) {
+    return;
+  }
+
   let buttonDiv = document.createElement('div');
   buttonDiv.setAttribute('class', 'leafygreen-ui-cssveg css-gt9crw efcqne00')
 
@@ -64,9 +71,17 @@ function addButtons(url) {
       .addEventListener("click", ButtonClickAction, false);
 }
 
-function main() {
-  console.log("XOXO | Started custom script");
-  addButtons();
+function runWhenNoteDivReady() { runWhenReady(noteDivSelector, addButtons); }
+
+function addListeners() {
+  document.getElementById(failureTabId)
+      .addEventListener("click", runWhenNoteDivReady, false);
 }
 
-runWhenReady(noteDivSelector, main);
+function main() {
+  console.log("XOXO | Started custom script");
+  addListeners();
+  runWhenNoteDivReady();
+}
+
+runWhenReady(`#${failureTabId}`, main);
