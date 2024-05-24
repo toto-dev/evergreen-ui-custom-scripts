@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Add BuildBaron button to Evergreen failure tab
 // @namespace   Violentmonkey Scripts
-// @match       https://spruce.mongodb.com/task/*/annotations*
+// @match       https://spruce.mongodb.com/task/*
 // @grant       none
 // @version     1.0
 // @author      -
